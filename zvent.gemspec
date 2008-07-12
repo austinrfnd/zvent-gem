@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.files = FileList['lib/event.rb']
   
   s.description = <<-EOF
-          Interface between zvents API without all the mess
+          Interface between zvents API without all the mess.
   EOF
   
   # s.executables = ['git-kablame', 'svn-kablame']
