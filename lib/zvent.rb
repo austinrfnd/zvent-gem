@@ -4,5 +4,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'rubygems'
 require 'json'
+require 'cgi'
 require 'net/http'
+
 Dir[File.dirname(__FILE__) + "/zvent/*.rb"].each { |file| require(file) }

@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   # s.rubyforge_project = 'kablame'
   s.email = 'afonacier@yellowpages.com'  
   s.has_rdoc = false
+  s.add_dependency('json', '>= 1.1.2')
 end
