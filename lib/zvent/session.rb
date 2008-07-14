@@ -1,5 +1,8 @@
 module Zvent
-  class Session
+  BASE_URL = "http://www.zvents.com/rest"  
+  
+  # A zvent session used to search and everything
+  class Session < Base
     def initialize(api_key)
       @api_key = api_key
     end
