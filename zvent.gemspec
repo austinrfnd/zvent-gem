@@ -6,10 +6,10 @@ Gem::Specification.new do |s|
   s.version = '0.0.1'
   s.summary = 'An interface for zvents'
   
-  s.files = FileList['zvent.rb',
-                     'lib/event.rb',
-                     'lib/base.rb',
-                     'lib/session.rb']
+  s.files = FileList['lib/zvent.rb',
+                     'lib/zvent/event.rb',
+                     'lib/zvent/base.rb',
+                     'lib/zvent/session.rb']
   
   s.description = <<-EOF
           Interface between zvents API without all the mess.
