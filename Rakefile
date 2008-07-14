@@ -5,3 +5,6 @@ namespace :gem do
   desc "Clean build artifacts"
   task( :clean ) { FileUtils.rm_rf Dir['*.gem'] }    
 end
+
+desc("Run the specs")
+task(:spec) { system 'ruby specs/all.rb' }
