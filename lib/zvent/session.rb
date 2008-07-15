@@ -8,12 +8,13 @@ module Zvent
     
     # find events 
     # returns an array of events
+    # {:event_count => 10, :events => [<# event>, ...]}s
     # options
-    # - as_json (defaults => false)
+    # - as_json (defaults => false) returns the json from zvents without any transformation
     def find_events(location, zvent_options = {}, options = {})
-      #TODO: require location
+      raise Zvent::NoLocationError.new if location.strip.empty?
       json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:where => location, :key => @api_key).to_query}")
-      objectify_zvents_json(json_ret)
+      options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
     end
     
     # find an event
@@ -25,10 +26,11 @@ module Zvent
     private
     def objectify_zvents_json(json)
       venues = objectify_venues(json['rsp']['content']['venues'])
-      objectify_events(json['rsp']['content']['events'], venues)
+      {:events => objectify_events(json['rsp']['content']['events'], venues),
+       :event_count => json['rsp']['content']['event_count']}      
     end
     
-    #returns a hash of venues
+    # returns a hash of venues
     # {venue_id => <# venue >, ...}
     def objectify_venues(venues)
       venue_hash = {}
