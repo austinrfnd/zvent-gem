@@ -21,7 +21,8 @@ describe Zvent::Session do
   
     it "should throw an error if no location is given" do
       zvent_session = Zvent::Session.new('API_KEY')
-      lambda {zvent_session.find_events('')}.should raise_error(Zvent::NoLocationError)      
+      lambda {zvent_session.find_events('')}.should raise_error(Zvent::NoLocationError)   
+      lambda {zvent_session.find_events('  ')}.should raise_error(Zvent::NoLocationError)            
     end
     
     it "should handle json read errors"
@@ -40,16 +41,27 @@ describe Zvent::Session do
     it "should be successful" do
       mock_get_event
       zvent_session = Zvent::Session.new('API_KEY') 
-      zvent_session.find_event('123456789')      
+      event = zvent_session.find_event('123456789')
+      event.should be_kind_of(Zvent::Event)
+      event.venue.should be_kind_of(Zvent::Venue)
     end
     
     it "should be return nil if no event found"
     
     it "should handle json read errors"
     
-    it "should throw error if no id is given"    
+    it "should throw error if no id is given" do
+      zvent_session = Zvent::Session.new('API_KEY') 
+      lambda {zvent_session.find_event('')}.should raise_error(Zvent::NoIdError)
+      lambda {zvent_session.find_event("   ")}.should raise_error(Zvent::NoIdError)  
+    end
     
-    it "should return just the json if options[:as_json] is true"
+    it "should return just the json if options[:as_json] is true" do
+      mock_get_event
+      zvent_session = Zvent::Session.new('API_KEY') 
+      event_hash = zvent_session.find_event('123456789',{},{:as_json => true})
+      event_hash.should be_kind_of(Hash)
+    end
   end
   
   private  

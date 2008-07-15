@@ -1,0 +1,34 @@
+= Zvent 0.0.1
+
+An interface with zvents API without all the mess.
+
+== Description
+
+An interface with zvents API without all the mess.
+
+== Usage
+
+#give it yoru API key
+@zvent = Zvent::Sesion.new('API_KEY')
+
+# Get an event
+# give it the event id
+event = @zvent.find_event('12345')
+#returns: <Zvent::Event:0x13d8884>
+
+# Each event has a venue object
+event.venue
+#returns <Zvent::Venue:0x13d8bf4>
+
+
+# Search for Events
+# give it a location
+events = @zvent.find_events('Simi Valley, CA')
+#returns {:events => [<Zvent::Event:0x13d8884>, <Zvent::Event:0x13d8884>]
+#					:event_count => 10}
+
+== TODO
+
+- Search by categories
+- Get a list of categories
+- Implement tzinfo timezones of events

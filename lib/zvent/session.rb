@@ -35,7 +35,7 @@ module Zvent
       #grab the json from zvents
       json_ret = get_resources(BASE_URL+"/event?#{zvent_options.merge(:id => event_id).to_query}")
       
-      objectify_zvents_json(json_ret)[:events].first
+      options[:as_json] ? json_ret : objectify_zvents_json(json_ret)[:events].first
     end
     
     private
