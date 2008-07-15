@@ -24,7 +24,7 @@ event.venue
 # Search for Events
 # give it a location
 events = @zvent.find_events('Simi Valley, CA')
-#returns {:events => [<Zvent::Event:0x13d8884>, <Zvent::Event:0x13d8884>]
+#returns {:events => [<Zvent::Event:0x13d8884>, ...],
 #					:event_count => 10}
 
 == TODO
