@@ -8,9 +8,14 @@ module Zvent
     
     # Use this method to find events from zvents.
     #
-    # Return
+    # <b>Return</b>
     # returns a hash that contains an array of events and an event count  
     # {:event_count => 10, :events => [<# event>, ...]}
+    # 
+    # <b>Arguments</b>
+    # 
+    # location
+    # * <tt>location</tt> - A string describing a location around which the search results will be restricted. (e.g., san francisco, ca or 94131). You can also specify a location using a longitude/latitude coordinate pair using the notation -74.0:BY:40.9    
     #  
     # zvent_options
     # * <tt>what</tt> - The string against which events are matched. (e.g., parade). (<tt>default</tt> = nil, which searches for everything)
@@ -30,8 +35,8 @@ module Zvent
     #   find_events('93063')
     #   => Finds any 10 events near the 93063 zip code area.
     #
-    #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'dancing'})
-    #   => Finds 10 events near the address that consists of dancing
+    #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'dancing', :limit => 25})
+    #   => Finds 25 events near the address that consists of dancing
     #
     #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'dancing'}, {:as_json => true})
     #   => Should return the json straight from zvents
@@ -47,13 +52,25 @@ module Zvent
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
     end
     
-    # find an event
-    # returns a single event if successful
-    # <# event>
-    # returns nil if nothing found
-    # 
+    # Use this method to return a single event from zvents
+    #
+    # <b>Return</b>
+    # returns a hash that contains an array of events and an event count  
+    # {:event_count => 10, :events => [<# event>, ...]}
+    #  
+    # <b>Arguments</b>
+    # event_id
+    # * <tt>id</tt> - ID of the event
+    #
     # options
-    # - as_json (defaults => false) returns the json from zvents without any transformation    
+    # * <tt>as_json</tt> - If set to true method will return the json from zvents without any transformation.  (<tt>false</tt> by default).
+    #  
+    # Examples:
+    #   find_event('1234')
+    #   => Finds an event with the id of 1234
+    #
+    #   find_event('1234', {:as_json => true})
+    #   => Finds an event with the id of 1234 and returns the json as it comes in from zvents
     def find_event(event_id, zvent_options={}, options = {})
       # event_id is required
       raise Zvent::NoIdError if event_id.strip.empty?
@@ -61,6 +78,7 @@ module Zvent
       #grab the json from zvents
       json_ret = get_resources(BASE_URL+"/event?#{zvent_options.merge(:id => event_id).to_query}")
       
+      #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)[:events].first
     end
     
