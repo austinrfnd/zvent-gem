@@ -10,7 +10,8 @@ Gem::Specification.new do |s|
                      'lib/zvent/event.rb',
                      'lib/zvent/venue.rb',                     
                      'lib/zvent/base.rb',
-                     'lib/zvent/session.rb']
+                     'lib/zvent/session.rb',
+                     'lib/core/ext.rb']
   
   s.description = <<-EOF
           Interface for the zvents API without all the mess.

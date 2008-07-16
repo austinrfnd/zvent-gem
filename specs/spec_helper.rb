@@ -2,6 +2,7 @@ require 'rubygems'
 gem 'rspec'
 require 'spec'
 require File.dirname(__FILE__) + '/../lib/zvent'
+require File.dirname(__FILE__) + '/../lib/core/ext'
 
 #mock data
 SEARCH_RESULTS = File.read(File.dirname(__FILE__) + "/../test_data/event_search.json")
