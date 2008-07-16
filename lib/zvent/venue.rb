@@ -1,5 +1,5 @@
 module Zvent
-  # A zvent session used to search and everything
+  # An object that represents a single venue from zvents
   class Venue < Base
     attr_accessor  :address, :city, :state, :country, :name, :latitude, 
                    :longitude, :zip, :private, :id, :timezone, :zurl,

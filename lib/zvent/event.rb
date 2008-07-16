@@ -1,5 +1,5 @@
 module Zvent  
-  # A zvent session used to search and everything
+  # An object that represents a single event from zvents
   class Event < Base
     attr_accessor :name, :artists, :price, :private, :editors_pick, :url, :approved,
                   :sc, :id, :images, :description, :vid, :color, :phone, :startTime,

@@ -4,6 +4,7 @@ module Zvent
   # raised when no location is given when it is required
   class NoLocationError < StandardError; end
   
+  # raised when no id proveded when it is required
   class NoIdError < StandardError; end
         
   class Base
