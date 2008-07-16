@@ -64,6 +64,16 @@ describe Zvent::Session do
     end
   end
   
+  describe "initialize" do
+    it "should raise error if not given an API key" do
+      lambda {Zvent::Session.new('')}.should raise_error(Zvent::NoApiKeyError)
+    end
+    
+    it "should not raise error if given an API key" do
+      lambda {Zvent::Session.new('API_KEY')}.should_not raise_error(Zvent::NoApiKeyError)      
+    end
+  end
+  
   private  
   def mock_event_search
     @http_mock = mock('http')

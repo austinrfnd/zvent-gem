@@ -1,8 +1,9 @@
 module Zvent
   # A zvent session used to search and everything
   class Session < Base
+    # Initializes the session object.  It requires an API key
     def initialize(api_key)
-      #TODO: require API_KEY
+      raise Zvent::NoApiKeyError.new if !api_key || api_key.strip.empty?
       @api_key = api_key
     end
     
@@ -100,14 +101,15 @@ module Zvent
       venue_hash
     end
     
+    # returns an array of events
     def objectify_events(events, venues_hash)
       (events && !events.empty?) ? events.collect{|e| objectify_event(e, venues_hash[e['vid']])} : []        
     end
-      
-    def objectify_event(event_hash, venue)
-      Event.new(event_hash.merge(:venue => venue))
-    end
     
+    # Turns the event json into an event object  
+    def objectify_event(event_hash, venue) ; Event.new(event_hash.merge(:venue => venue)) ; end
+
+    # Turns the venue json into a venue object    
     def objectify_venue(venue) ; Venue.new(venue) ; end
   end
 end

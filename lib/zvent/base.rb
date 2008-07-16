@@ -6,6 +6,9 @@ module Zvent
   
   # raised when no id proveded when it is required
   class NoIdError < StandardError; end
+  
+  # raise when not given an API key
+  class NoApiKeyError < StandardError; end
         
   class Base
     def get_resources(url)
