@@ -6,11 +6,36 @@ module Zvent
       @api_key = api_key
     end
     
-    # find events 
-    # returns an array of events
+    # Use this method to find events from zvents.
+    #
+    # Return
+    # returns a hash that contains an array of events and an event count  
     # {:event_count => 10, :events => [<# event>, ...]}
+    #  
+    # zvent_options
+    # * <tt>what</tt> - The string against which events are matched. (e.g., parade). (<tt>default</tt> = nil, which searches for everything)
+    # * <tt>when</tt> - A string specifying a date range for the search (e.g., today, this week, next week, friday, etc.). Explicit date ranges can be specified by separating two dates with the word "to" (e.g., monday to thursday, 10/30/2007 to 11/4/2007). Leave this string blank to search all future events.	
+    # * <tt>radius</tt> - The number of miles around the location (specified in the where field) to search. If this field is left blank, a default radius is supplied. The default radius varies according to the location specified in the where field.	
+    # * <tt>limit</tt> - The maximum number of matching events to return. The default is 10 and maximum is 10. Zvents partners can exceed the maximum.(<tt>Default</tt> = 10.  <tt>Max</tt> = 25)
+    # * <tt>offset</tt> - The number of events to skip from the beginning of the search results. If a search matches 1000 events, returning 25 events starting at offset 100 will return event numbers 100-125 that match the search. (<tt>Default</tt> = 0)
+    # * <tt>trim</tt> - Set to 1 if repeating events should be trimmed from the search results. Set to 0 to return repeating events. If the trim option is enabled, only 1 event will be returned from each repeating series that matches the search. The number of events within the series that match the search is returned in the series_count response parameter. Defaults to 1.
+    # * <tt>sort</tt> - Set to 1 to sort search results by start time. Set to 0 to sort search results by relevance. Defaults to 0.	
+    # * <tt>cat</tt> - Restrict your search to items that belong to a specific category. You must provide a category identifier which can be determined using the categories API call.	
+    #	* <tt>catex</tt> - Exclude items from a specific category from the search. You must provide a category identifier which can be determined using the categories API call.	
+    #
     # options
-    # - as_json (defaults => false) returns the json from zvents without any transformation
+    # * <tt>as_json</tt> - If set to true method will return the json from zvents without any transformation.  (<tt>false</tt> by default).
+    #  
+    # Examples:
+    #   find_events('93063')
+    #   => Finds any 10 events near the 93063 zip code area.
+    #
+    #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'dancing'})
+    #   => Finds 10 events near the address that consists of dancing
+    #
+    #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'dancing'}, {:as_json => true})
+    #   => Should return the json straight from zvents
+    #
     def find_events(location, zvent_options = {}, options = {})      
       #location is required
       raise Zvent::NoLocationError.new if location.strip.empty?
@@ -26,6 +51,7 @@ module Zvent
     # returns a single event if successful
     # <# event>
     # returns nil if nothing found
+    # 
     # options
     # - as_json (defaults => false) returns the json from zvents without any transformation    
     def find_event(event_id, zvent_options={}, options = {})
