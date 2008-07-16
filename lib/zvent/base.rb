@@ -11,6 +11,8 @@ module Zvent
   class NoApiKeyError < StandardError; end
         
   class Base
+    
+    # Get Json and parse it
     def get_resources(url)
       url = URI.parse(url)
       

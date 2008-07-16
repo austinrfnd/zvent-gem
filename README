@@ -29,3 +29,4 @@ To search for events give it a location
 - Get a list of categories
 - Implement tzinfo timezones of events
 - Have it not blow up if event can not be found with find_event call
+- Error messages for zvents API error
