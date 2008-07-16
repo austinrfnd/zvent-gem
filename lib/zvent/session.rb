@@ -55,8 +55,8 @@ module Zvent
     # Use this method to return a single event from zvents
     #
     # <b>Return</b>
-    # returns a hash that contains an array of events and an event count  
-    # {:event_count => 10, :events => [<# event>, ...]}
+    # returns an single event.  If an event can not be found it will return nil
+    # <# event>
     #  
     # <b>Arguments</b>
     # event_id
