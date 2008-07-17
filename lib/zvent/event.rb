@@ -22,8 +22,20 @@ module Zvent
     # Does the event have any images?
     def images? ; !self.images.empty? ; end
     
+    # Does the event or venue have any images?
     def deep_images?
       self.images? || (self.venue.nil? ? false : self.venue.images?)
+    end
+    
+    # Returns the first image it sees from event.  If none is found it will return nil
+    # <b>size</b>
+    # * <tt>tiny</tt> - 44x44
+    # * <tt>medium</tt> - 66x66
+    # * <tt>featured</tt> - 150x150
+    # * <tt>primary</tt> - 184x184
+    # * <tt>original</tt> Will just grab the original image from zvents (default)    
+    def image(size='original')
+      self.images? ? convert_image(self.images.first, size) : nil
     end
     
     # Returns the first image it sees.  First it checks the event for images thent the venue for images.
@@ -44,12 +56,16 @@ module Zvent
       else
         image = nil
       end
-      (image.nil? || size == 'original') ? image : convert_image(image, size)
+      (image.nil?) ? image : convert_image(image, size)
     end
     
     private    
     # grab the size of the image requested  
     def convert_image(image, size)
+      # if the size is original just return the image
+      return image if size == 'original'
+      
+      # else grab the specific size
       IMAGE_SIZES.include?(size) ? image.insert(image.index('.jpg'), "_#{size}") : (raise Zvent::InvalidImageSize.new)
     end     
   end

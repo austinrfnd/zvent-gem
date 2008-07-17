@@ -17,6 +17,6 @@ module Zvent
     def images? ; !self.images.empty? ; end
     
     # Returns the tz timezone object
-    def tz_timezone ;  TZInfo::Timezone.get(self.venue) ; end
+    def tz_timezone ;  TZInfo::Timezone.get(self.timezone) ; end
   end
 end
