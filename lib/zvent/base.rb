@@ -12,6 +12,8 @@ module Zvent
   
   # raise when the API doesn't like the request
   class ZventApiError < StandardError; end
+  
+  class InvalidImageSize < StandardError; end
         
   class Base
     

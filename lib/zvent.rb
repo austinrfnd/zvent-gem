@@ -4,6 +4,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'rubygems'
 require 'json'
+require 'tzinfo'
 require 'cgi'
 require 'net/http'
 

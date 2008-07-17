@@ -46,5 +46,18 @@ describe Zvent::Event do
       event = Zvent::Event.new({'images' => []})      
       event.deep_image.should be_nil
     end
+    
+    it "should return images of all sizes" do
+      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      event.deep_image('tiny').should =~ /_tiny.jpg/
+      event.deep_image('medium').should =~ /_medium.jpg/
+      event.deep_image('primary').should =~ /_primary.jpg/
+      event.deep_image('featured').should =~ /_featured.jpg/      
+    end
+    
+    it "should raise an error if I give it an image size that isn't accepted" do
+      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      lambda {event.deep_image('HUMUNGO')}.should raise_error(Zvent::InvalidImageSize)
+    end
   end
 end

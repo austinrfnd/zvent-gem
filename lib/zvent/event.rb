@@ -1,6 +1,8 @@
 module Zvent  
   # An object that represents a single event from zvents
-  class Event < Base
+  class Event < Base    
+    IMAGE_SIZES = ['tiny', 'medium', 'featured', 'primary', 'original']    
+    
     attr_accessor   :name, :artists, :price, :private, :editors_pick, :url, :approved,
                   :sc, :id, :images, :description, :vid, :color, :phone, :startTime,
                   :endTime, :zurl, :venue
@@ -14,6 +16,9 @@ module Zvent
       end
     end
         
+    # Returns the tz timezone object from the venue
+    def tz_timezone ; self.venue.tz_timezone ; end
+        
     # Does the event have any images?
     def images? ; !self.images.empty? ; end
     
@@ -23,14 +28,29 @@ module Zvent
     
     # Returns the first image it sees.  First it checks the event for images thent the venue for images.
     # If none is found it will return nil
-    def deep_image
+    # 
+    # <b>size</b>
+    # * <tt>tiny</tt> - 44x44
+    # * <tt>medium</tt> - 66x66
+    # * <tt>featured</tt> - 150x150
+    # * <tt>primary</tt> - 184x184
+    # * <tt>original</tt> Will just grab the original image from zvents (default)
+    def deep_image(size='original')
+      image = nil
       if self.images?
-        self.images.first
+        image = self.images.first
       elsif self.venue
-        self.venue.images? ? self.venue.images.first : nil                
+        image = self.venue.images? ? self.venue.images.first : nil                
       else
-        nil
+        image = nil
       end
+      (image.nil? || size == 'original') ? image : convert_image(image, size)
     end
+    
+    private    
+    # grab the size of the image requested  
+    def convert_image(image, size)
+      IMAGE_SIZES.include?(size) ? image.insert(image.index('.jpg'), "_#{size}") : (raise Zvent::InvalidImageSize.new)
+    end     
   end
 end
