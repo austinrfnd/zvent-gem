@@ -25,8 +25,6 @@ describe Zvent::Session do
       lambda {zvent_session.find_events('  ')}.should raise_error(Zvent::NoLocationError)            
     end
     
-    it "should handle json read errors"
-    
     it "should return empty array and 0 event_count if no events found" do
       mock_empty_event_search      
       zvent_session = Zvent::Session.new('API_KEY')
@@ -47,8 +45,6 @@ describe Zvent::Session do
     end
     
     it "should be return nil if no event found"
-    
-    it "should handle json read errors"
     
     it "should throw error if no id is given" do
       zvent_session = Zvent::Session.new('API_KEY') 

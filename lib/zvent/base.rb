@@ -9,6 +9,9 @@ module Zvent
   
   # raise when not given an API key
   class NoApiKeyError < StandardError; end
+  
+  # raise when the API doesn't like the request
+  class ZventApiError < StandardError; end
         
   class Base
     
@@ -21,6 +24,11 @@ module Zvent
       }
       
       resources = JSON.parse(res.body)
+      
+      if resources['rsp']['status'] == 'error'
+        raise Zvent::ZventApiError.new(resources['rsp']['msg'])
+      end
+      
       return resources      
     end
   end
