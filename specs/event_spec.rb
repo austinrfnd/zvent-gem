@@ -43,6 +43,11 @@ describe Zvent::Event do
       event = Zvent::Event.new({'images' => []})      
       event.image.should be_nil  
     end
+    
+    it "should return the original image if given no argument" do
+      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      event.image.should eql('asdf.jpg')            
+    end
   end
   
   describe "deep_image" do
