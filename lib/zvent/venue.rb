@@ -12,5 +12,8 @@ module Zvent
         # Do nothing!
       end
     end
+    
+    # Does the venue have any images
+    def images? ; !self.images.empty? ; end
   end
 end
