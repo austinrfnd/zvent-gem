@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Zvent::Session do
   describe "find_events" do
     it "should be successful" do  
-      mock_event_search      
+      find_event_returns :event_search    
       zvent_session = Zvent::Session.new('API_KEY')    
       events = zvent_session.find_events('93063')
       events.should be_kind_of(Hash)
@@ -13,7 +13,7 @@ describe Zvent::Session do
     end
   
     it "should return the json only if options[:as_json] is true" do
-      mock_event_search      
+      find_event_returns :event_search    
       zvent_session = Zvent::Session.new('API_KEY')    
       events = zvent_session.find_events('93063', {}, {:as_json => true})      
       events.should be_kind_of(Hash)
@@ -26,7 +26,7 @@ describe Zvent::Session do
     end
     
     it "should return empty array and 0 event_count if no events found" do
-      mock_empty_event_search      
+      find_event_returns :empty_event_search    
       zvent_session = Zvent::Session.new('API_KEY')
       events = zvent_session.find_events('93063')
       events[:events].should be_empty
@@ -37,7 +37,7 @@ describe Zvent::Session do
   
   describe "find_event" do
     it "should be successful" do
-      mock_get_event
+      find_event_returns :event
       zvent_session = Zvent::Session.new('API_KEY') 
       event = zvent_session.find_event('123456789')
       event.should be_kind_of(Zvent::Event)
@@ -57,7 +57,7 @@ describe Zvent::Session do
     end
     
     it "should return just the json if options[:as_json] is true" do
-      mock_get_event
+      find_event_returns :event
       zvent_session = Zvent::Session.new('API_KEY') 
       event_hash = zvent_session.find_event('123456789',{},{:as_json => true})
       event_hash.should be_kind_of(Hash)
@@ -75,29 +75,6 @@ describe Zvent::Session do
   end
   
   private  
-  def mock_event_search
-    @http_mock = mock('http')
-    @http_mock.stub!(:get)
-    @response_mock = mock(Net::HTTPResponse)
-    @response_mock.stub!(:body).and_return(SEARCH_RESULTS)
-    Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)    
-  end
-  
-  def mock_get_event    
-    @http_mock = mock('http')
-    @http_mock.stub!(:get)
-    @response_mock = mock(Net::HTTPResponse)
-    @response_mock.stub!(:body).and_return(EVENT_RESULT)
-    Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)    
-  end
-  
-  def mock_empty_event_search
-    @http_mock = mock('http')
-    @http_mock.stub!(:get)
-    @response_mock = mock(Net::HTTPResponse)
-    @response_mock.stub!(:body).and_return(EMPTY_SEARCH_RESULTS)
-    Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)        
-  end    
 
   def find_event_returns(name)
     @http_mock = mock('http')
