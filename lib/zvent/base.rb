@@ -24,7 +24,6 @@ module Zvent
       res = Net::HTTP.start(url.host, url.port) {|http|
         http.get(url.request_uri+"&format=json&key=#{@api_key}")
       }
-      
       resources = JSON.parse(res.body)
       
       if resources['rsp']['status'] == 'error'

@@ -44,7 +44,11 @@ describe Zvent::Session do
       event.venue.should be_kind_of(Zvent::Venue)
     end
     
-    it "should be return nil if no event found"
+    it "should raise error if no event found" do
+      find_event_returns(:unknown_event_id)
+      zvent_session = Zvent::Session.new('API_KEY')
+      lambda { zvent_session.find_event('12345689')}.should raise_error(Zvent::ZventApiError)
+    end
     
     it "should throw error if no id is given" do
       zvent_session = Zvent::Session.new('API_KEY') 
@@ -94,4 +98,12 @@ describe Zvent::Session do
     @response_mock.stub!(:body).and_return(EMPTY_SEARCH_RESULTS)
     Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)        
   end    
+
+  def find_event_returns(name)
+    @http_mock = mock('http')
+    @http_mock.stub!(:get)
+    @response_mock = mock(Net::HTTPResponse)
+    @response_mock.stub!(:body).and_return(File.read(GEM_ROOT + "/test_data/#{name.to_s}.json"))
+    Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)
+  end
 end
