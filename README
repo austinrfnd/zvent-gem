@@ -1,4 +1,4 @@
-= Zvent 0.0.1
+= Zvent 0.0.2
 
 An interface with zvents API without all the mess.
 
@@ -14,19 +14,20 @@ give it your API key when you initialize the session object.
 To get an event you give it an event id.
 This call returns an event object.
 	event = @zvent.find_event('12345')
+	
+The event can get images of all different types and sizes
+	event.image('tiny')			# returns an image (44x44)
 
 Each event has a venue object
-	venue = event.venue
+	venue = event.venue 		# returns the venue object
 
 To search for events give it a location
 	events = @zvent.find_events('Simi Valley, CA')
-	events[:event_count] 		#how many events total are in this search
-	events[:events] 				#access to the array of events
+	events[:event_count] 		# how many events total are in this search
+	events[:events] 			# access to the array of events
 
 == TODO
 
-- Search by categories
 - Get a list of categories
 - Implement tzinfo timezones of events
 - Have it not blow up if event can not be found with find_event call
-- Error messages for zvents API error
