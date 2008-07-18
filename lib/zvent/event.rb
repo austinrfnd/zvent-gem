@@ -15,14 +15,46 @@ module Zvent
         # Do nothing!
       end
     end
-        
+    
+    # Get the start time of the event.  Events are guaranteed an start time.  
+    # The function will return a DateTime object of the time.
+    #
+    # <b>options</b>
+    # <tt>utc</tt> - Want the time in local (to the venue) or in UTC? Defaults to UTC
+    def startTime(utc=true)
+      # if there is no startTime return nil
+      return nil if @startTime.nil?
+      
+      # Parse the startTime
+      start_time = DateTime.parse(@startTime)
+      
+      # Decide if we need to return UTC or local time
+      utc ? start_time : DateTime.parse(self.tz_timezone.utc_to_local(start_time).to_s)
+    end
+    
+    # Get the end time of the event.  Events are not guaranteed an end time.    
+    # The function will return a DateTime object of the time.  If there isn't an endtime it will return nil.  
+    #
+    # <b>options</b>
+    # <tt>utc</tt> - Want the time in local (to the venue) or in UTC? Defaults to UTC
+    def endTime(utc=true)
+      # if there is no startTime return nil
+      return nil if @endTime.nil?
+      
+      # Parse the startTime
+      end_time = DateTime.parse(@endTime)
+      
+      # Decide if we need to return UTC or local time
+      utc ? end_time : DateTime.parse(self.tz_timezone.utc_to_local(end_time).to_s)
+    end    
+            
     # Returns the tz timezone object from the venue
     def tz_timezone ; self.venue.tz_timezone ; end
         
-    # Does the event have any images?
+    # Does the event have any images
     def images? ; !self.images.empty? ; end
     
-    # Does the event or venue have any images?
+    # Does the event or venue have any images
     def deep_images?
       self.images? || (self.venue.nil? ? false : self.venue.images?)
     end

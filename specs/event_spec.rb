@@ -50,6 +50,51 @@ describe Zvent::Event do
     end
   end
   
+  describe 'startTime' do
+    before :each do
+      venue = Zvent::Venue.new({'timezone' => 'US/Pacific'})
+      @event = Zvent::Event.new({'startTime' => 'Sun Mar 12 15:00:00 GMT 2006', 'venue' => venue})
+    end
+    
+    it "should return a dateTime object" do
+      @event.startTime.should be_kind_of(DateTime)
+    end
+    
+    it "should return UTC by default" do
+      @event.startTime.to_s.should eql('2006-03-12T15:00:00+00:00')
+    end
+    
+    it "should return local time if utc is set to false" do
+      @event.startTime(false).to_s.should eql('2006-03-12T07:00:00+00:00')      
+    end
+  end
+
+  describe 'endTime' do
+    before :each do
+      venue = Zvent::Venue.new({'timezone' => 'US/Pacific'})
+      @event = Zvent::Event.new({'startTime' => 'Sun Mar 12 15:00:00 GMT 2006', 
+                                 'endTime' => 'Sun Mar 12 17:00:00 GMT 2006', 'venue' => venue})
+    end
+    
+    it "should return a dateTime object" do
+      @event.endTime.should be_kind_of(DateTime)
+    end
+    
+    it "should return UTC by default" do
+      @event.endTime.to_s.should eql('2006-03-12T17:00:00+00:00')
+    end
+    
+    it "should return local time if utc is set to false" do
+      @event.endTime(false).to_s.should eql('2006-03-12T09:00:00+00:00')      
+    end
+    
+    it "should return nil if there is no endTime" do
+      @event = Zvent::Event.new({'venue' => Zvent::Venue.new({'timezone' => 'US/Pacific'})})      
+      
+      @event.endTime.should be_nil
+    end
+  end
+  
   describe "deep_image" do
     it "should return the event image if an event has an image" do
       venue = Zvent::Venue.new({'images' => ['asdf2.jpg']})
