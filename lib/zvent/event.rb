@@ -29,7 +29,7 @@ module Zvent
       start_time = DateTime.parse(@startTime)
       
       # Decide if we need to return UTC or local time
-      utc ? start_time : DateTime.parse(self.tz_timezone.utc_to_local(start_time).to_s)
+      utc ? DateTime.parse(self.tz_timezone.local_to_utc(start_time).to_s) : start_time
     end
     
     # Get the end time of the event.  Events are not guaranteed an end time.    
@@ -45,7 +45,7 @@ module Zvent
       end_time = DateTime.parse(@endTime)
       
       # Decide if we need to return UTC or local time
-      utc ? end_time : DateTime.parse(self.tz_timezone.utc_to_local(end_time).to_s)
+      utc ? DateTime.parse(self.tz_timezone.local_to_utc(end_time).to_s) : end_time 
     end    
             
     # Returns the tz timezone object from the venue

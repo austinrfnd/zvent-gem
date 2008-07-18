@@ -61,11 +61,11 @@ describe Zvent::Event do
     end
     
     it "should return UTC by default" do
-      @event.startTime.to_s.should eql('2006-03-12T15:00:00+00:00')
+      @event.startTime.to_s.should eql('2006-03-12T23:00:00+00:00')
     end
     
     it "should return local time if utc is set to false" do
-      @event.startTime(false).to_s.should eql('2006-03-12T07:00:00+00:00')      
+      @event.startTime(false).to_s.should eql('2006-03-12T15:00:00+00:00')      
     end
   end
 
@@ -81,11 +81,11 @@ describe Zvent::Event do
     end
     
     it "should return UTC by default" do
-      @event.endTime.to_s.should eql('2006-03-12T17:00:00+00:00')
+      @event.endTime.to_s.should eql('2006-03-13T01:00:00+00:00')
     end
     
     it "should return local time if utc is set to false" do
-      @event.endTime(false).to_s.should eql('2006-03-12T09:00:00+00:00')      
+      @event.endTime(false).to_s.should eql('2006-03-12T17:00:00+00:00')      
     end
     
     it "should return nil if there is no endTime" do
@@ -104,7 +104,7 @@ describe Zvent::Event do
     
     it "should return the venue image if no image exists" do
       venue = Zvent::Venue.new({'images' => ['asdf2.jpg']})
-      event = Zvent::Event.new({'images' => [], 'venue' => venue})      
+      event = Zvent::Event.new({'images' => [], 'venue' => venue})
       event.deep_image.should eql('asdf2.jpg')      
     end
     
