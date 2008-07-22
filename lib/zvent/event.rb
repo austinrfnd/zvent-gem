@@ -88,6 +88,7 @@ module Zvent
       else
         image = nil
       end
+
       (image.nil?) ? image : convert_image(image, size)
     end
     
@@ -98,8 +99,8 @@ module Zvent
       image_url = image.class == Hash ? image['url'] : image
       
       # if the size is original just return the image
-      return image['url'] if size == 'original'
-      
+      return image_url if size == 'original'
+
       # else grab the specific size
       IMAGE_SIZES.include?(size) ? image_url.insert(image_url.index('.jpg'), "_#{size}") : (raise Zvent::InvalidImageSize.new)
     end     
