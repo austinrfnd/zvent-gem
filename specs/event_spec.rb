@@ -27,7 +27,7 @@ describe Zvent::Event do
   
   describe 'image' do
     it "should return images of all size" do
-      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      event = Zvent::Event.new({'images' => [{'url' => 'asdf.jpg'}, {'url' => 'best.jpg'}]})
       event.image('tiny').should =~ /_tiny.jpg/
       event.image('medium').should =~ /_medium.jpg/
       event.image('primary').should =~ /_primary.jpg/
@@ -35,7 +35,7 @@ describe Zvent::Event do
     end
 
     it "should raise an error if I give it an image size that isn't accepted" do
-      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      event = Zvent::Event.new({'images' => [{'url' => 'asdf.jpg'}, {'url' => 'best.jpg'}]})
       lambda {event.image('HUMUNGO')}.should raise_error(Zvent::InvalidImageSize)
     end
     
@@ -45,7 +45,7 @@ describe Zvent::Event do
     end
     
     it "should return the original image if given no argument" do
-      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      event = Zvent::Event.new({'images' => [{'url' => 'asdf.jpg'}, {'url' => 'best.jpg'}]})
       event.image.should eql('asdf.jpg')            
     end
   end
@@ -98,7 +98,7 @@ describe Zvent::Event do
   describe "deep_image" do
     it "should return the event image if an event has an image" do
       venue = Zvent::Venue.new({'images' => ['asdf2.jpg']})
-      event = Zvent::Event.new({'images' => ['asdf.jpg'], 'venue' => venue})      
+      event = Zvent::Event.new({'images' => [{'url' => 'asdf.jpg'}], 'venue' => venue})      
       event.deep_image.should eql('asdf.jpg')
     end
     
@@ -118,7 +118,7 @@ describe Zvent::Event do
     end
     
     it "should return images of all sizes" do
-      event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
+      event = Zvent::Event.new({'images' => [{'url' => 'asdf.jpg'}, {'url' => 'best.jpg'}]})
       event.deep_image('tiny').should =~ /_tiny.jpg/
       event.deep_image('medium').should =~ /_medium.jpg/
       event.deep_image('primary').should =~ /_primary.jpg/

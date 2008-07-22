@@ -10,6 +10,9 @@ describe Zvent::Session do
       events[:event_count].should be_kind_of(Integer)
       events[:events].should be_kind_of(Array)
       events[:events].each{|event| event.should be_kind_of(Zvent::Event)}
+      events[:events].each do |event|
+        event.deep_image('medium') if event.deep_images?
+      end
     end
   
     it "should return the json only if options[:as_json] is true" do

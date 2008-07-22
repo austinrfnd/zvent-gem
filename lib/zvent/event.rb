@@ -93,12 +93,15 @@ module Zvent
     
     private    
     # grab the size of the image requested  
-    def convert_image(image, size)
+    def convert_image(image, size)      
+      # Apparently venue returns a different kind of image than event.
+      image_url = image.class == Hash ? image['url'] : image
+      
       # if the size is original just return the image
-      return image if size == 'original'
+      return image['url'] if size == 'original'
       
       # else grab the specific size
-      IMAGE_SIZES.include?(size) ? image.insert(image.index('.jpg'), "_#{size}") : (raise Zvent::InvalidImageSize.new)
+      IMAGE_SIZES.include?(size) ? image_url.insert(image_url.index('.jpg'), "_#{size}") : (raise Zvent::InvalidImageSize.new)
     end     
   end
 end
