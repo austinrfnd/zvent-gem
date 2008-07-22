@@ -44,7 +44,7 @@ module Zvent
     #
     def find_events(location, zvent_options = {}, options = {})      
       #location is required
-      raise Zvent::NoLocationError.new if location.strip.empty?
+      raise Zvent::NoLocationError.new if !location || location.strip.empty?
       
       #grab the json from zvents
       json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:where => location).to_query}")

@@ -23,6 +23,7 @@ describe Zvent::Session do
       zvent_session = Zvent::Session.new('API_KEY')
       lambda {zvent_session.find_events('')}.should raise_error(Zvent::NoLocationError)   
       lambda {zvent_session.find_events('  ')}.should raise_error(Zvent::NoLocationError)            
+      lambda {zvent_session.find_events(nil)}.should raise_error(Zvent::NoLocationError)                  
     end
     
     it "should return empty array and 0 event_count if no events found" do
