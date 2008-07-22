@@ -83,7 +83,7 @@ module Zvent
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)[:events].first
     end
     
-    private
+    protected
     def objectify_zvents_json(json)
       venues = objectify_venues(json['rsp']['content']['venues'])
       {:events => objectify_events(json['rsp']['content']['events'], venues),
