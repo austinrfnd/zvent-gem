@@ -65,7 +65,7 @@ module Zvent
         if @categories.nil?
           @categories = [Zvent::Category.new(category)]
         else
-          @categories << Zvent::Category.new()
+          @categories << Zvent::Category.new(category)
         end
       end if categories_json
     end

@@ -33,8 +33,9 @@ describe Zvent::Event do
   
   describe 'categories' do
     it "should allow to set categories" do
-      event = Zvent::Event.new({:categories=>[{:name => 'Spelunking', :pid => 3, :id => 2, :count => 1}]})
-      event.categories.length.should eql(1)
+      event = Zvent::Event.new({:categories=>[{:name => 'Spelunking', :pid => 3, :id => 2, :count => 1},
+                                              {:name => 'Cleaning', :pid => 1, :id => 4, :count => 0}]})
+      event.categories.length.should eql(2)
       event.categories.each{|c| c.should be_kind_of(Zvent::Category)}
       event.category?.should be_true
     end
