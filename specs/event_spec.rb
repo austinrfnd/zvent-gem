@@ -14,6 +14,12 @@ describe Zvent::Event do
       event.images?.should eql(false)
       event.deep_images?.should eql(false)
     end
+    
+    it "should be false if images is not in the array" do
+      event = Zvent::Event.new({})
+      event.images?.should eql(false)
+      event.deep_images?.should eql(false)      
+    end
   end
   
   describe 'deep_images?' do

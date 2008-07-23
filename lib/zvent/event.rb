@@ -52,7 +52,7 @@ module Zvent
     def tz_timezone ; self.venue.tz_timezone ; end
         
     # Does the event have any images
-    def images? ; !self.images.empty? ; end
+    def images?  ; (@images.nil? || @images.empty?) ? false : true ; end
     
     # Does the event or venue have any images
     def deep_images?
