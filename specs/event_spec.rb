@@ -31,6 +31,20 @@ describe Zvent::Event do
     end
   end
   
+  describe 'categories' do
+    it "should allow to set categories" do
+      event = Zvent::Event.new({:categories=>[{:name => 'Spelunking', :pid => 3, :id => 2, :count => 1}]})
+      event.categories.length.should eql(1)
+      event.categories.each{|c| c.should be_kind_of(Zvent::Category)}
+      event.category?.should be_true
+    end
+    
+    it "should have no categories" do
+      event = Zvent::Event.new({})      
+      event.category?.should be_false
+    end
+  end
+  
   describe 'image' do
     it "should return images of all size" do
       event = Zvent::Event.new({'images' => [{'url' => 'asdf.jpg'}, {'url' => 'best.jpg'}]})

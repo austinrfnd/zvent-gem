@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
                      'lib/zvent/event.rb',
                      'lib/zvent/venue.rb',                     
                      'lib/zvent/base.rb',
+                     'lib/zvent/category.rb',                     
                      'lib/zvent/session.rb',
                      'lib/core/ext.rb']
   

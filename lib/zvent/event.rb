@@ -10,7 +10,7 @@ module Zvent
     # expects the json hash that is given from zvents
     def initialize(event_hash)
       begin
-        event_hash.each_pair{|key, value| self.send("#{key}=", value) }      
+        event_hash.each_pair{|key, value| self.send("#{key}=", value) }
       rescue NoMethodError => e
         # Do nothing!
       end
@@ -46,18 +46,31 @@ module Zvent
       
       # Decide if we need to return UTC or local time
       utc ? DateTime.parse(self.tz_timezone.local_to_utc(end_time).to_s) : end_time 
-    end    
+    end
             
     # Returns the tz timezone object from the venue
     def tz_timezone ; self.venue.tz_timezone ; end
         
     # Does the event have any images
-    def images?  ; (@images.nil? || @images.empty?) ? false : true ; end
+    def images?  ; !(@images.nil? || @images.empty?); end
     
     # Does the event or venue have any images
     def deep_images?
       self.images? || (self.venue.nil? ? false : self.venue.images?)
     end
+    
+    # Categories takes in some json
+    def categories=(categories_json)
+      categories_json.each do |category|
+        if @categories.nil?
+          @categories = [Zvent::Category.new(category)]
+        else
+          @categories << Zvent::Category.new()
+        end
+      end if categories_json
+    end
+    
+    def category? ; !(@categories.nil? || @categories.empty?) ; end
     
     # Returns the first image it sees from event.  If none is found it will return nil
     # <b>size</b>
