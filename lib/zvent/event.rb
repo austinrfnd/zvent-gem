@@ -3,9 +3,9 @@ module Zvent
   class Event < Base    
     IMAGE_SIZES = ['tiny', 'medium', 'featured', 'primary', 'original']    
     
-    attr_accessor   :name, :artists, :price, :private, :editors_pick, :url, :approved,
+    attr_accessor :name, :artists, :price, :private, :editors_pick, :url, :approved,
                   :sc, :id, :images, :description, :vid, :color, :phone, :startTime,
-                  :endTime, :zurl, :venue
+                  :endTime, :zurl, :venue, :categories
     
     # expects the json hash that is given from zvents
     def initialize(event_hash)
