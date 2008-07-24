@@ -80,7 +80,7 @@ module Zvent
     # * <tt>primary</tt> - 184x184
     # * <tt>original</tt> Will just grab the original image from zvents (default)    
     def image(size='original')
-      self.images? ? convert_image(self.images.first, size) : nil
+      self.images? ? convert_image(@images.first, size) : nil
     end
     
     # Returns the first image it sees.  First it checks the event for images thent the venue for images.
@@ -95,9 +95,9 @@ module Zvent
     def deep_image(size='original')
       image = nil
       if self.images?
-        image = self.images.first
+        image = @images.first
       elsif self.venue
-        image = self.venue.images? ? self.venue.images.first : nil                
+        image = @venue.images? ? @venue.images.first : nil                
       else
         image = nil
       end
