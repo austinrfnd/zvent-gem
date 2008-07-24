@@ -106,6 +106,9 @@ module Zvent
       (image.nil?) ? image : convert_image(image, size)
     end
     
+    # Checks to see if the event has a venue
+    def venue? ; !(@venue.nil?) ; end
+    
     private    
     # grab the size of the image requested  
     def convert_image(image, size)      
