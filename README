@@ -37,6 +37,5 @@ To search for events give it a location
 
 == TODO
 
-- Get a list of categories
-- Implement tzinfo timezones of events
-- Have it not blow up if event can not be found with find_event call
+- Improve the documentation
+- Ensure the classes don't blow up when you start asking for specific things

@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://github.com/austinrfnd/zvent-gem/'
   s.email = 'afonacier@yellowpages.com'  
   s.has_rdoc = true
+  s.rubyforge_project = 'zvent'  
   s.extra_rdoc_files = ['README']
   s.add_dependency('json', '>= 1.1.2')
   s.add_dependency('tzinfo', '>= 0.3.9')  
