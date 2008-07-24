@@ -70,6 +70,7 @@ module Zvent
       end if categories_json
     end
     
+    # Does the event have any categories attached to it?
     def category? ; !(@categories.nil? || @categories.empty?) ; end
     
     # Returns the first image it sees from event.  If none is found it will return nil
@@ -109,7 +110,7 @@ module Zvent
     # grab the size of the image requested  
     def convert_image(image, size)      
       # Apparently venue returns a different kind of image than event.
-      image_url = image.class == Hash ? image['url'] : image
+      image_url = image.kind_of?(Hash) ? image['url'] : image
       
       # if the size is original just return the image
       return image_url if size == 'original'
