@@ -49,14 +49,14 @@ module Zvent
     end
             
     # Returns the tz timezone object from the venue
-    def tz_timezone ; self.venue.tz_timezone ; end
+    def tz_timezone ; @venue.tz_timezone; end
         
     # Does the event have any images
     def images?  ; !(@images.nil? || @images.empty?); end
     
     # Does the event or venue have any images
     def deep_images?
-      self.images? || (self.venue.nil? ? false : self.venue.images?)
+      self.images? || (@venue.nil? ? false : @venue.images?)
     end
     
     # Categories takes in some json
