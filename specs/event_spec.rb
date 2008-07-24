@@ -2,6 +2,19 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Zvent::Event do
   
+  describe "venue?" do
+    it "should return false if no venue" do
+      event = Zvent::Event.new({})
+      event.venue?.should eql(false)
+    end
+    
+    it "should return true if there is a venue" do
+      venue = Zvent::Venue.new({})
+      event = Zvent::Event.new({'venue' => venue})      
+      event.venue?.should eql(true)
+    end
+  end
+  
   describe 'images?' do
     it "should be false if images" do
       event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
