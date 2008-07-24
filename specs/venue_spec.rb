@@ -10,10 +10,27 @@ describe Zvent::Venue do
     venue = Zvent::Venue.new({'images' => []})
     venue.images?.should eql(false)    
   end
-  
+
   it "should return tz timezone object" do
     venue = Zvent::Venue.new({'timezone' => 'US/Pacific'})
     venue.tz_timezone
     venue.tz_timezone.should be_kind_of(TZInfo::Timezone)
+  end
+  
+  it "tz_timezone should return nil if no timezone" do
+    venue = Zvent::Venue.new({})  
+    venue.tz_timezone.should be_nil
+  end
+  
+  describe "timezone?" do
+    it "should return false if no timezone" do
+      venue = Zvent::Venue.new({})      
+      venue.timezone?.should eql(false)
+    end
+    
+    it "should return false if there is a timezone" do
+      venue = Zvent::Venue.new({'timezone' => 'US/Pacific'})      
+      venue.timezone?.should eql(true)
+    end    
   end
 end

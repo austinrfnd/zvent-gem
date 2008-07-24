@@ -1,4 +1,4 @@
-= Zvent 0.0.2
+= Zvent 0.0.3
 
 An interface with zvents API without all the mess.
 
@@ -17,6 +17,15 @@ This call returns an event object.
 	
 The event can get images of all different types and sizes
 	event.image('tiny')			# returns an image (44x44)
+
+The event can have categories of sorts
+	event.categories				# returns the category object
+
+The event has support for timezones.  Please read the rdoc for more examples
+	event.startTime					# Returns the UTC of the start time
+	event.endTime(false)    # Returns the end time of the event in local time to the venue.  
+													# If the venue is in US/Pacific the time of the event will come back
+													# in US/Pacific.
 
 Each event has a venue object
 	venue = event.venue 		# returns the venue object

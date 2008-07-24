@@ -14,9 +14,11 @@ module Zvent
     end
     
     # Does the venue have any images
-    def images? ; !self.images.empty? ; end
+    def images? ; !@images.empty? ; end
+    
+    def timezone? ; !(@timezone.nil? || @timezone.empty?) ; end
     
     # Returns the tz timezone object
-    def tz_timezone ;  TZInfo::Timezone.get(self.timezone) ; end
+    def tz_timezone ;  timezone? ? TZInfo::Timezone.get(@timezone) : nil ; end
   end
 end
