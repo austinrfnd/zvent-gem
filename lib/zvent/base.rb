@@ -13,6 +13,10 @@ module Zvent
   # raise when the API doesn't like the request
   class ZventApiError < StandardError; end
   
+  # Raise when the API returns a failure
+  class ZventApiFailure < StandardError ; end
+  
+  # Raises when asking for an invalid image size
   class InvalidImageSize < StandardError; end
         
   class Base
@@ -26,8 +30,10 @@ module Zvent
       }
       resources = JSON.parse(res.body)
       
-      if resources['rsp']['status'] == 'error'
+      if resources['rsp']['status'] == 'error' 
         raise Zvent::ZventApiError.new(resources['rsp']['msg'])
+      elsif resources['rsp']['status'] == 'failed'
+        raise Zvent::ZventApiFailure.new(resources['rsp']['msg'])
       end
       
       return resources      

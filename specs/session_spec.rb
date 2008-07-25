@@ -51,7 +51,7 @@ describe Zvent::Session do
     it "should raise error if no event found" do
       find_event_returns(:unknown_event_id)
       zvent_session = Zvent::Session.new('API_KEY')
-      lambda { zvent_session.find_event('12345689')}.should raise_error(Zvent::ZventApiError)
+      lambda { zvent_session.find_event('12345689')}.should raise_error(Zvent::ZventApiFailure)
     end
     
     it "should throw error if no id is given" do

@@ -1,1 +1,1 @@
-{"rsp":{"status":"error","msg":"Unknown event ID: 12345689"}}
+{"rsp":{"status":"failed","msg":"Unknown event ID: 0"}}
