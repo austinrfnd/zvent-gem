@@ -9,10 +9,12 @@ module Zvent
     
     # expects the json hash that is given from zvents
     def initialize(event_hash)
-      begin
-        event_hash.each_pair{|key, value| self.send("#{key}=", value) }
-      rescue NoMethodError => e
-        # Do nothing!
+      event_hash.each_pair do |key, value| 
+        begin  
+          self.send("#{key}=", value)
+        rescue NoMethodError => e
+          #do nothing
+        end        
       end
     end
     

@@ -46,6 +46,7 @@ describe Zvent::Session do
       event = zvent_session.find_event('123456789')
       event.should be_kind_of(Zvent::Event)
       event.venue.should be_kind_of(Zvent::Venue)
+      event.venue.address.should_not be_nil
     end
     
     it "should raise error if no event found" do

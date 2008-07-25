@@ -6,10 +6,12 @@ module Zvent
                    :types, :images, :phone, :url, :description, :parent_id
     
     def initialize(venue_hash)
-      begin
-        venue_hash.each_pair{|key, value| self.send("#{key}=", value) }
-      rescue NoMethodError => e
-        # Do nothing!
+      venue_hash.each_pair do |key, value| 
+        begin  
+          self.send("#{key}=", value)
+        rescue NoMethodError => e
+          #do nothing
+        end        
       end
     end
     
