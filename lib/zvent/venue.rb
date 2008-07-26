@@ -16,7 +16,7 @@ module Zvent
     end
     
     # Does the venue have any images
-    def images? ; !@images.empty? ; end
+    def images? ; !(@images.nil? || @images.empty?) ; end
     
     def timezone? ; !(@timezone.nil? || @timezone.empty?) ; end
     
