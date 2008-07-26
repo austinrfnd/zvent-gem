@@ -5,7 +5,7 @@ module Zvent
     
     attr_accessor :name, :artists, :price, :private, :editors_pick, :url, :approved,
                   :sc, :id, :images, :description, :vid, :color, :phone, :startTime,
-                  :endTime, :zurl, :venue, :categories
+                  :endTime, :zurl, :venue, :categories, :age_suitability
     
     # expects the json hash that is given from zvents
     def initialize(event_hash)
