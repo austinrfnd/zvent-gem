@@ -1,6 +1,10 @@
 module Zvent
   # A zvent session used to search and everything
   class Session < Base
+    # Default zvents arguments
+    # Image_size = none assures we just get the plain file name.  Transformations to different sizes are done within the gem
+    ZVENTS_DEFAULT_ARGUMENTS = {:image_size => 'none'}
+    
     # Initializes the session object.  It requires an API key
     def initialize(api_key)
       raise Zvent::NoApiKeyError.new if !api_key || api_key.strip.empty?
@@ -47,7 +51,7 @@ module Zvent
       raise Zvent::NoLocationError.new if !location || location.strip.empty?
       
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:where => location).to_query}")
+      json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:where => location).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
       
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
@@ -77,7 +81,7 @@ module Zvent
       raise Zvent::NoIdError if event_id.strip.empty?
       
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/event?#{zvent_options.merge(:id => event_id).to_query}")
+      json_ret = get_resources(BASE_URL+"/event?#{zvent_options.merge(:id => event_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
       
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)[:events].first
