@@ -76,6 +76,9 @@ describe Zvent::Event do
     it "should return nil if no images" do
       event = Zvent::Event.new({'images' => []})      
       event.image.should be_nil  
+      
+      event = Zvent::Event.new({})            
+      event.images.should be_nil
     end
     
     it "should return the original image if given no argument" do
