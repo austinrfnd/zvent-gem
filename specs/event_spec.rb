@@ -145,8 +145,7 @@ describe Zvent::Event do
     it "should return nil if neither event or venue contains an image" do
       venue = Zvent::Venue.new({'images' => []})
       event = Zvent::Event.new({'images' => [], 'venue' => venue})      
-      event.deep_image.should be_nil
-      
+      event.deep_image.should be_nil      
       event = Zvent::Event.new({'images' => []})      
       event.deep_image.should be_nil
     end
@@ -163,5 +162,10 @@ describe Zvent::Event do
       event = Zvent::Event.new({'images' => ['asdf.jpg', 'best.jpg']})
       lambda {event.deep_image('HUMUNGO')}.should raise_error(Zvent::InvalidImageSize)
     end
+  end
+  
+  it "should be a well formatted event" do
+    event = Zvent::Event.new({:age_suitability => '18 or older'})
+    event.age_suitability.should eql('18 or older')
   end
 end

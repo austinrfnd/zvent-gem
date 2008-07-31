@@ -11,7 +11,7 @@ describe Zvent::Venue do
     venue.name.should eql("name!")
     venue.city.should eql('in my city')
   end
-  
+
   it "should describe images? as false if venue has no images" do
     venue = Zvent::Venue.new({'images' => []})
     venue.images?.should eql(false)    
