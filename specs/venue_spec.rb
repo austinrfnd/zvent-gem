@@ -6,6 +6,12 @@ describe Zvent::Venue do
     venue.images?.should eql(true)
   end
   
+  it "should return all real attributes" do
+    venue = Zvent::Venue.new({:not_real_attribute => 'asdf', :name => 'name!', :city => 'in my city'})
+    venue.name.should eql("name!")
+    venue.city.should eql('in my city')
+  end
+  
   it "should describe images? as false if venue has no images" do
     venue = Zvent::Venue.new({'images' => []})
     venue.images?.should eql(false)    
