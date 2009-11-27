@@ -14,7 +14,7 @@ describe Zvent::Base do
     @http_mock = mock('http')
     @http_mock.stub!(:get)
     @response_mock = mock(Net::HTTPResponse)
-    @response_mock.stub!(:body).and_return(INVALID_API_KEY)
+    @response_mock.stub!(:body).and_return(test_data(:invalid_api_key))
     Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)    
   end
 end

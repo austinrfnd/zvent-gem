@@ -85,7 +85,7 @@ describe Zvent::Session do
     @http_mock = mock('http')
     @http_mock.stub!(:get)
     @response_mock = mock(Net::HTTPResponse)
-    @response_mock.stub!(:body).and_return(File.read(GEM_ROOT + "/test_data/#{name.to_s}.json"))
+    @response_mock.stub!(:body).and_return(test_data(name))
     Net::HTTP.stub!(:start).and_yield(@http_mock).and_return(@response_mock)
   end
 end
