@@ -79,21 +79,68 @@ module Zvent
     def find_event(event_id, zvent_options={}, options = {})
       # event_id is required
       raise Zvent::NoIdError if event_id.strip.empty?
-      
+
       #grab the json from zvents
       json_ret = get_resources(BASE_URL+"/event?#{zvent_options.merge(:id => event_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
-      
+
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)[:events].first
     end
-    
+
+    # Use this method to find venues from zvents.
+    #
+    # <b>Return</b>
+    # returns a hash that contains an array of venues and a venue count
+    # {:venue_count => 10, :venues => [<# venue>, ...]}
+    #
+    # <b>Arguments</b>
+    #
+    # location
+    # * <tt>location</tt> - A string describing a location around which the search results will be restricted. (e.g., san francisco, ca or 94131). You can also specify a location using a longitude/latitude coordinate pair using the notation -74.0:BY:40.9
+    #
+    # zvent_options
+    # * <tt>what</tt> - The string against which venues are matched. (e.g., parade). (<tt>default</tt> = nil, which searches for everything)
+    # * <tt>radius</tt> - The number of miles around the location (specified in the where field) to search. If this field is left blank, a default radius is supplied. The default radius varies according to the location specified in the where field.
+    # * <tt>limit</tt> - The maximum number of matching venues to return. The default is 10 and maximum is 10. Zvents partners can exceed the maximum.(<tt>Default</tt> = 10.  <tt>Max</tt> = 25)
+    # * <tt>offset</tt> - The number of venues to skip from the beginning of the search results. If a search matches 1000 venues, returning 25 venues starting at offset 100 will return venue numbers 100-125 that match the search. (<tt>Default</tt> = 0)
+    # * <tt>vt</tt> - Restrict your search to items that belong to a specific venue type. You must provide a venue type id.
+    #
+    # options
+    # * <tt>as_json</tt> - If set to true method will return the json from zvents without any transformation.  (<tt>false</tt> by default).
+    #
+    # Examples:
+    #   find_venues('93063')
+    #   => Finds any 10 venues near the 93063 zip code area.
+    #
+    #   find_venues('611 N. Brand Blvd. Glendale, Ca', {:what => 'museum', :limit => 25})
+    #   => Finds 25 venues near the address that match 'museum'
+    #
+    #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'museum'}, {:as_json => true})
+    #   => Should return the json straight from zvents
+    #
+    def find_venues(location, zvent_options = {}, options = {})
+      #location is required
+      raise Zvent::NoLocationError.new if !location || location.strip.empty?
+
+      #grab the json from zvents
+      json_ret = get_resources(BASE_URL+"/search_for_venues?#{zvent_options.merge(:where => location).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+
+      #return the json or objectified json
+      options[:as_json] ? json_ret : objectify_venues_json(json_ret)
+    end
+
     protected
     def objectify_zvents_json(json)
       venues = objectify_venues(json['rsp']['content']['venues'])
       {:events => objectify_events(json['rsp']['content']['events'], venues),
-       :event_count => json['rsp']['content']['event_count']||0}      
+       :event_count => json['rsp']['content']['event_count']||0}
     end
-    
+
+    def objectify_venues_json(json)
+      {:venues => objectify_venues(json['rsp']['content']['venues']).values,
+       :venue_count => json['rsp']['content']['venue_count']||0}
+    end
+
     # returns a hash of venues
     # {venue_id => <# venue >, ...}
     def objectify_venues(venues)
