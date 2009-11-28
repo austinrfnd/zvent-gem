@@ -90,12 +90,38 @@ describe Zvent::Session do
     end
 
     it "should return empty array and 0 venue_count if no venues found" do
-      find_event_returns :empty_venue_search
+      search_for_venues_returns :empty_venue_search
       zvent_session = Zvent::Session.new('API_KEY')
       venues = zvent_session.find_venues('93063')
       venues[:venues].should be_empty
       venues[:venues].length.should == 0
       venues[:venue_count].should eql(0)
+    end
+  end
+
+  describe "venue_events" do
+    it "should be successful" do
+      venue_events_returns :venue_events
+      zvent_session = Zvent::Session.new('API_KEY')
+      events = zvent_session.venue_events(9955)
+      events[:event_count].should == 10
+      events[:events].length.should == 10
+      events[:events].each{|event| event.should be_kind_of(Zvent::Event)}
+    end
+
+    it "should raise an error if no venue ID is given" do
+      zvent_session = Zvent::Session.new('API_KEY')
+      lambda {zvent_session.venue_events(nil)}.should raise_error(Zvent::NoLocationError)
+      lambda {zvent_session.venue_events('xyz')}.should raise_error(Zvent::NoLocationError)
+    end
+
+    it "should return json if options[:as_json] is true" do
+      venue_events_returns :venue_events
+      zvent_session = Zvent::Session.new('API_KEY')
+      events = zvent_session.venue_events(
+        9955, {}, {:as_json => true})
+      events.should be_kind_of(Hash)
+      events['rsp']['content']['events'][0].should be_kind_of(Hash)
     end
   end
 
@@ -120,4 +146,5 @@ describe Zvent::Session do
   end
 
   alias search_for_venues_returns find_event_returns
+  alias venue_events_returns find_event_returns
 end

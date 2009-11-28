@@ -129,6 +129,48 @@ module Zvent
       options[:as_json] ? json_ret : objectify_venues_json(json_ret)
     end
 
+    # Use this method to find events at a given venue from zvents.
+    #
+    # <b>Return</b>
+    # returns a hash that contains an array of events and an event count
+    # {:event_count => 10, :events => [<# event>, ...]}
+    #
+    # <b>Arguments</b>
+    #
+    # venue_id
+    # * <tt>venue_id</tt> - ID of the venue, gleaned from an earlier Zvents call
+    #
+    # zvent_options
+    # * <tt>limit</tt> - The maximum number of matching events to return. The default is 10 and maximum is 10. Zvents partners can exceed the maximum.(<tt>Default</tt> = 10.  <tt>Max</tt> = 25)
+    # * <tt>offset</tt> - The number of events to skip from the beginning of the search results. If a search matches 1000 events, returning 25 events starting at offset 100 will return event numbers 100-125 that match the search. (<tt>Default</tt> = 0)
+    # * <tt>sd</tt> - Return only events that start on or after this date. (format: MM/DD/YYYY, defaults to today)
+    # * <tt>ed</tt> - Return only events that start on or before this date. This parameter can be used in conjunction with sd to return events within a specific date range. (format: MM/DD/YYYY)
+    # * <tt>st</tt> - Return only events that start at or after this time. (format: seconds since the epoch, e.g., 1142399089)
+    # * <tt>et</tt> - Return only events that start at or before this time. This parameter can be used in conjunction with st to return events within a specific time range. (format: seconds since the epoch, e.g., 1142399089)
+    #
+    # options
+    # * <tt>as_json</tt> - If set to true method will return the json from zvents without any transformation.  (<tt>false</tt> by default).
+    #
+    # Examples:
+    #   venue_events(9955)
+    #   => Finds any 10 events for venue ID 9955
+    #
+    #   venue_events(venue.id)
+    #   => Finds any 10 events for the given Zvents::Venue
+    #
+    #   venue_events(venue.id, {:sd => '12/31/2009'}, {:as_json => true})
+    #   => Finds events starting on New Year's Eve, and returns json
+    def venue_events(venue_id, zvent_options = {}, options = {})
+      venue_id = venue_id.to_i
+      raise Zvent::NoLocationError.new if venue_id == 0
+
+      #grab the json from zvents
+      json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:id => venue_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+
+      #return the json or objectified json
+      options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
+    end
+
     protected
     def objectify_zvents_json(json)
       venues = objectify_venues(json['rsp']['content']['venues'])
