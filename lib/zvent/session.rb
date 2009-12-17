@@ -165,7 +165,7 @@ module Zvent
       raise Zvent::NoLocationError.new if venue_id == 0
 
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:id => venue_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+      json_ret = get_resources(BASE_URL+"/venue_events?#{zvent_options.merge(:id => venue_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
 
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
