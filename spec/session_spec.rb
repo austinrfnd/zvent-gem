@@ -125,6 +125,36 @@ describe Zvent::Session do
     end
   end
 
+  describe "find_performers" do
+    it "should be successful" do
+      search_for_performers_returns :performer_search
+      zvent_session = Zvent::Session.new('API_KEY')
+      performers = zvent_session.find_performers('Cirque du Soleil')
+      performers.should be_kind_of(Hash)
+      performers[:performer_count].should == 18
+      performers[:performers].length.should == 10
+      performers[:performers].each{|performer| performer.should be_kind_of(Zvent::Performer)}
+    end
+
+    it "should return json if options[:as_json] is true" do
+      search_for_performers_returns :performer_search
+      zvent_session = Zvent::Session.new('API_KEY')
+      performers = zvent_session.find_performers(
+        'Vancouver, BC', {}, {:as_json => true})
+      performers.should be_kind_of(Hash)
+      performers['rsp']['content']['groups'][0].should be_kind_of(Hash)
+    end
+
+    it "should return empty array and 0 performer_count if no performers found" do
+      search_for_performers_returns :empty_performer_search
+      zvent_session = Zvent::Session.new('API_KEY')
+      performers = zvent_session.find_performers('Cirque du Soleil')
+      performers[:performers].should be_empty
+      performers[:performers].length.should == 0
+      performers[:performer_count].should eql(0)
+    end
+  end
+
   describe "initialize" do
     it "should raise error if not given an API key" do
       lambda {Zvent::Session.new('')}.should raise_error(Zvent::NoApiKeyError)
@@ -147,4 +177,5 @@ describe Zvent::Session do
 
   alias search_for_venues_returns find_event_returns
   alias venue_events_returns find_event_returns
+  alias search_for_performers_returns find_event_returns
 end

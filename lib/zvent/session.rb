@@ -171,6 +171,37 @@ module Zvent
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
     end
 
+    # Use this method to find performers from zvents.
+    #
+    # <b>Return</b>
+    # returns a hash that contains an array of performers and a performer count
+    # {:performer_count => 10, :performers => [<# performer>, ...]}
+    #
+    # <b>Arguments</b>
+    #
+    # what
+    # * <tt>what</tt> - The string against which items are matched in the search. (e.g., parade).
+    #
+    # zvent_options
+    # * <tt>limit</tt> - The maximum number of matching performers to return.
+    #
+    # Examples:
+    #   find_performers('Cirque du Soleil')
+    #   => Finds any 10 performers matching Cirque du Soleil
+    #
+    #   find_performers('Cirque du Soleil', :limit => 1)
+    #   => Finds any 1 performer matching Cirque du Soleil
+    #
+    #   find_performers('Cirque du Soleil', {:as_json => true})
+    #   => Finds performers and returns the result as JSON
+    def find_performers(what, zvent_options = {}, options = {})
+      #grab the json from zvents
+      json_ret = get_resources(BASE_URL+"/search_for_performers?#{zvent_options.merge(:what => what).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+
+      #return the json or objectified json
+      options[:as_json] ? json_ret : objectify_performers_json(json_ret)
+    end
+
     protected
     def objectify_zvents_json(json)
       venues = objectify_venues(json['rsp']['content']['venues'])
@@ -183,6 +214,12 @@ module Zvent
        :venue_count => json['rsp']['content']['venue_count']||0}
     end
 
+    def objectify_performers_json(json)
+      {:performers => objectify_performers(
+          json['rsp']['content']['groups']).values,
+       :performer_count => json['rsp']['content']['group_count']||0}
+    end
+
     # returns a hash of venues
     # {venue_id => <# venue >, ...}
     def objectify_venues(venues)
@@ -193,16 +230,30 @@ module Zvent
       end if venues && !venues.empty?
       venue_hash
     end
-    
+
+    # returns a hash of performers
+    # {performer_id => <# performer >, ...}
+    def objectify_performers(performers)
+      performer_hash = {}
+      performers.each do |performer|
+        v = objectify_performer(performer)
+        performer_hash[v.id] = v
+      end if performers && !performers.empty?
+      performer_hash
+    end
+
     # returns an array of events
     def objectify_events(events, venues_hash)
-      (events && !events.empty?) ? events.collect{|e| objectify_event(e, venues_hash[e['vid']])} : []        
+      (events && !events.empty?) ? events.collect{|e| objectify_event(e, venues_hash[e['vid']])} : []
     end
-    
-    # Turns the event json into an event object  
+
+    # Turns the event json into an event object
     def objectify_event(event_hash, venue) ; Event.new(event_hash.merge(:venue => venue)) ; end
 
-    # Turns the venue json into a venue object    
+    # Turns the venue json into a venue object
     def objectify_venue(venue) ; Venue.new(venue) ; end
+
+    # Turns the performer json into a performer object
+    def objectify_performer(performer) ; Performer.new(performer) ; end
   end
 end
