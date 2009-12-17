@@ -1,6 +1,8 @@
 module Zvent
   # A zvent session used to search and everything
   class Session < Base
+    BASE_URL = "http://www.zvents.com/rest"
+
     # Default zvents arguments
     # Image_size = none assures we just get the plain file name.  Transformations to different sizes are done within the gem
     ZVENTS_DEFAULT_ARGUMENTS = {:image_size => 'none'}
