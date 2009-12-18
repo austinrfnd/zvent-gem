@@ -1,16 +1,17 @@
 module Zvent
   # A zvent session used to search and everything
   class Session < Base
-    BASE_URL = "http://www.zvents.com/rest"
+    DEFAULT_BASE_URL = "http://www.zvents.com/rest"
 
     # Default zvents arguments
     # Image_size = none assures we just get the plain file name.  Transformations to different sizes are done within the gem
     ZVENTS_DEFAULT_ARGUMENTS = {:image_size => 'none'}
     
     # Initializes the session object.  It requires an API key
-    def initialize(api_key)
+    def initialize(api_key, options = {})
       raise Zvent::NoApiKeyError.new if !api_key || api_key.strip.empty?
       @api_key = api_key
+      @base_url = options[:base_url] || DEFAULT_BASE_URL
     end
     
     # Use this method to find events from zvents.
@@ -53,7 +54,7 @@ module Zvent
       raise Zvent::NoLocationError.new if !location || location.strip.empty?
       
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/search?#{zvent_options.merge(:where => location).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+      json_ret = get_resources(@base_url+"/search?#{zvent_options.merge(:where => location).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
       
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
@@ -83,7 +84,7 @@ module Zvent
       raise Zvent::NoIdError if event_id.strip.empty?
 
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/event?#{zvent_options.merge(:id => event_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+      json_ret = get_resources(@base_url+"/event?#{zvent_options.merge(:id => event_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
 
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)[:events].first
@@ -125,7 +126,7 @@ module Zvent
       raise Zvent::NoLocationError.new if !location || location.strip.empty?
 
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/search_for_venues?#{zvent_options.merge(:where => location).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+      json_ret = get_resources(@base_url+"/search_for_venues?#{zvent_options.merge(:where => location).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
 
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_venues_json(json_ret)
@@ -167,7 +168,7 @@ module Zvent
       raise Zvent::NoLocationError.new if venue_id == 0
 
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/venue_events?#{zvent_options.merge(:id => venue_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+      json_ret = get_resources(@base_url+"/venue_events?#{zvent_options.merge(:id => venue_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
 
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
@@ -198,7 +199,7 @@ module Zvent
     #   => Finds performers and returns the result as JSON
     def find_performers(what, zvent_options = {}, options = {})
       #grab the json from zvents
-      json_ret = get_resources(BASE_URL+"/search_for_performers?#{zvent_options.merge(:what => what).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+      json_ret = get_resources(@base_url+"/search_for_performers?#{zvent_options.merge(:what => what).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
 
       #return the json or objectified json
       options[:as_json] ? json_ret : objectify_performers_json(json_ret)

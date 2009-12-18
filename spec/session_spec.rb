@@ -1,6 +1,18 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe Zvent::Session do
+  it 'has a configurable base URL' do
+    zvent_session = Zvent::Session.new('API_KEY',
+      :base_url => 'http://fake.zvents.com/rest')
+
+    zvent_session.should_receive(:get_resources).
+      with('http://fake.zvents.com/rest/search?' +
+        'image_size=none&where=San+Jose%2C+CA').
+      and_raise('unimportant result')
+
+    zvent_session.find_events('San Jose, CA') rescue 'unimportant result'
+  end
+
   describe "find_events" do
     it "should be successful" do  
       find_event_returns :event_search    
