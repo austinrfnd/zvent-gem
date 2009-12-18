@@ -167,6 +167,32 @@ describe Zvent::Session do
     end
   end
 
+  describe "performer_events" do
+    it "should be successful" do
+      performer_events_returns :performer_events
+      zvent_session = Zvent::Session.new('API_KEY')
+      events = zvent_session.performer_events(9955)
+      events[:event_count].should == 10
+      events[:events].length.should == 10
+      events[:events].each{|event| event.should be_kind_of(Zvent::Event)}
+    end
+
+    it "should raise an error if no performer ID is given" do
+      zvent_session = Zvent::Session.new('API_KEY')
+      lambda {zvent_session.performer_events(nil)}.should raise_error(Zvent::NoLocationError)
+      lambda {zvent_session.performer_events('xyz')}.should raise_error(Zvent::NoLocationError)
+    end
+
+    it "should return json if options[:as_json] is true" do
+      performer_events_returns :performer_events
+      zvent_session = Zvent::Session.new('API_KEY')
+      events = zvent_session.performer_events(
+        9955, {}, {:as_json => true})
+      events.should be_kind_of(Hash)
+      events['rsp']['content']['events'][0].should be_kind_of(Hash)
+    end
+  end
+
   describe "initialize" do
     it "should raise error if not given an API key" do
       lambda {Zvent::Session.new('')}.should raise_error(Zvent::NoApiKeyError)
@@ -190,4 +216,5 @@ describe Zvent::Session do
   alias search_for_venues_returns find_event_returns
   alias venue_events_returns find_event_returns
   alias search_for_performers_returns find_event_returns
+  alias performer_events_returns find_event_returns
 end

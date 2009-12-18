@@ -205,6 +205,44 @@ module Zvent
       options[:as_json] ? json_ret : objectify_performers_json(json_ret)
     end
 
+    # Use this method to find events for a given performer from zvents.
+    #
+    # <b>Return</b>
+    # returns a hash that contains an array of events and an event count
+    # {:event_count => 10, :events => [<# event>, ...]}
+    #
+    # <b>Arguments</b>
+    #
+    # performer_id
+    # * <tt>performer_id</tt> - ID of the performer, gleaned from an earlier Zvents call
+    #
+    # zvent_options
+    # * <tt>limit</tt> - The maximum number of matching events to return. The default is 10 and maximum is 10. Zvents partners can exceed the maximum.(<tt>Default</tt> = 10.  <tt>Max</tt> = 25)
+    # * <tt>when</tt> - A string specifying a date range for the search (e.g., today, this week, next week, friday, etc.). Explicit date ranges can be specified by separating two dates with the word "to" (e.g., monday to thursday, 10/30/2007 to 11/4/2007). Leave this string blank to search all future events.	
+    #
+    # options
+    # * <tt>as_json</tt> - If set to true method will return the json from zvents without any transformation.  (<tt>false</tt> by default).
+    #
+    # Examples:
+    #   performer_events(9955)
+    #   => Finds any 10 events for performer ID 9955
+    #
+    #   performer_events(performer.id)
+    #   => Finds any 10 events for the given Zvents::Performer
+    #
+    #   performer_events(performer.id, {:sd => '12/31/2009'}, {:as_json => true})
+    #   => Finds events starting on New Year's Eve, and returns json
+    def performer_events(performer_id, zvent_options = {}, options = {})
+      performer_id = performer_id.to_i
+      raise Zvent::NoLocationError.new if performer_id == 0
+
+      #grab the json from zvents
+      json_ret = get_resources(@base_url+"/performer_events?#{zvent_options.merge(:id => performer_id).merge(ZVENTS_DEFAULT_ARGUMENTS).to_query}")
+
+      #return the json or objectified json
+      options[:as_json] ? json_ret : objectify_zvents_json(json_ret)
+    end
+
     protected
     def objectify_zvents_json(json)
       venues = objectify_venues(json['rsp']['content']['venues'])
