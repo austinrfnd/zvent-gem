@@ -117,7 +117,7 @@ module Zvent
     #   find_venues('611 N. Brand Blvd. Glendale, Ca', {:what => 'museum', :limit => 25})
     #   => Finds 25 venues near the address that match 'museum'
     #
-    #   find_events('611 N. Brand Blvd. Glendale, Ca', {:what => 'museum'}, {:as_json => true})
+    #   find_venues('611 N. Brand Blvd. Glendale, Ca', {:what => 'museum'}, {:as_json => true})
     #   => Should return the json straight from zvents
     #
     def find_venues(location, zvent_options = {}, options = {})
