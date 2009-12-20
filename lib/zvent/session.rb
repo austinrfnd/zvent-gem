@@ -277,15 +277,17 @@ module Zvent
     def objectify_performers(performers)
       performer_hash = {}
       performers.each do |performer|
-        v = objectify_performer(performer)
-        performer_hash[v.id] = v
+        p = objectify_performer(performer)
+        performer_hash[p.id] = p
       end if performers && !performers.empty?
       performer_hash
     end
 
     # returns an array of events
     def objectify_events(events, venues_hash)
-      (events && !events.empty?) ? events.collect{|e| objectify_event(e, venues_hash[e['vid']])} : []
+      (events || []).collect do |e|
+        objectify_event(e, venues_hash[e['vid'] || e['venue_id']])
+      end
     end
 
     # Turns the event json into an event object

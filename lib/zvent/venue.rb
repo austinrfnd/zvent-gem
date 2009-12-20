@@ -13,6 +13,11 @@ module Zvent
           #do nothing
         end        
       end
+
+      # Zvents Partner API
+      self.url ||= venue_hash['link']
+      self.description ||= venue_hash['summary']
+      # TODO: external URLs
     end
     
     # Does the venue have any images

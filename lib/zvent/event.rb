@@ -16,6 +16,10 @@ module Zvent
           #do nothing
         end        
       end
+
+      # Zvents Partner API
+      self.url ||= event_hash['link']
+      self.startTime ||= event_hash['starttime']
     end
     
     # Get the start time of the event.  Events are guaranteed an start time.  
