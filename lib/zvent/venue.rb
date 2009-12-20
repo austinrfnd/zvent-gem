@@ -15,7 +15,7 @@ module Zvent
       end
 
       # Zvents Partner API
-      self.url ||= venue_hash['link']
+      self.zurl ||= venue_hash['link']
       self.description ||= venue_hash['summary']
       # TODO: external URLs
     end

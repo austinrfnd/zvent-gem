@@ -13,7 +13,7 @@ module Zvent
       end
 
       # Zvents Partner API
-      self.url ||= performer_hash['link']
+      self.zurl ||= performer_hash['link']
       self.description ||= performer_hash['summary']
     end
 

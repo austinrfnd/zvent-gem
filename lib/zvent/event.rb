@@ -18,7 +18,7 @@ module Zvent
       end
 
       # Zvents Partner API
-      self.url ||= event_hash['link']
+      self.zurl ||= event_hash['link']
       self.startTime ||= event_hash['starttime']
     end
     
